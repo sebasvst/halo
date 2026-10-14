@@ -1,0 +1,139 @@
+/* Halo design tokens — single source of truth for colours, spacing, motion.
+   The island itself is always true black, like the real Dynamic Island. */
+
+:root {
+  color-scheme: dark;
+
+  /* Island surfaces — pure black, the signature of the Dynamic Island */
+  --halo-island: rgba(0, 0, 0, 0.97);
+  --halo-island-panel: rgba(8, 8, 10, 0.92);
+  --halo-card: rgba(255, 255, 255, 0.07);
+  --halo-card-2: rgba(255, 255, 255, 0.11);
+  --halo-card-3: rgba(255, 255, 255, 0.16);
+  --halo-hairline: rgba(255, 255, 255, 0.09);
+  --halo-hairline-strong: rgba(255, 255, 255, 0.18);
+
+  /* Legacy surface names (kept so components share one palette) */
+  --halo-bg: rgba(0, 0, 0, 0.96);
+  --halo-surface: rgba(18, 18, 20, 0.98);
+  --halo-surface-2: rgba(32, 32, 36, 0.95);
+  --halo-surface-3: rgba(48, 48, 54, 0.95);
+  --halo-border: var(--halo-hairline);
+  --halo-border-strong: var(--halo-hairline-strong);
+
+  /* Text on black */
+  --halo-text: rgba(255, 255, 255, 1);
+  --halo-text-2: rgba(235, 235, 245, 0.6);
+  --halo-text-3: rgba(235, 235, 245, 0.32);
+
+  /* Accent & status — Apple-flavoured */
+  --halo-accent: #0a84ff;
+  --halo-accent-2: #5ac8fa;
+  --halo-accent-soft: rgba(10, 132, 255, 0.22);
+  --halo-switch-on: #30d158;
+  --halo-success: #30d158;
+  --halo-warning: #ff9f0a;
+  --halo-error: #ff453a;
+
+  /* Borders & shadows */
+  --halo-shadow: 0 18px 50px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.45);
+  --halo-shadow-soft: 0 6px 22px rgba(0, 0, 0, 0.5);
+  --halo-glow-notification: 0 0 0 1.5px rgba(10, 132, 255, 0.55), 0 0 26px rgba(10, 132, 255, 0.4);
+  --halo-glow-timer: 0 0 0 1.5px rgba(255, 159, 10, 0.55), 0 0 26px rgba(255, 159, 10, 0.35);
+  --halo-glow-media: 0 0 0 1.5px rgba(48, 209, 88, 0.5), 0 0 26px rgba(48, 209, 88, 0.32);
+
+  /* Radii */
+  --halo-r-sm: 10px;
+  --halo-r-md: 16px;
+  --halo-r-lg: 28px;
+  --halo-r-pill: 999px;
+
+  /* Spacing scale */
+  --halo-gap-1: 4px;
+  --halo-gap-2: 8px;
+  --halo-gap-3: 12px;
+  --halo-gap-4: 16px;
+  --halo-gap-5: 20px;
+
+  /* Window padding (must match MARGIN_X / MARGIN_Y in utils/layout.ts) */
+  --halo-pad-x: 18px;
+  --halo-pad-y: 14px;
+
+  /* Typography — SF-like stack; Segoe UI Variable is the closest on Windows */
+  --halo-font: "SF Pro Display", "SF Pro Text", "Segoe UI Variable Display",
+    "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --halo-font-numeric: "SF Mono", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+
+  /* Motion — the spring curve Apple uses for island transitions */
+  --halo-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --halo-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --halo-dur-fast: 160ms;
+  --halo-dur: 320ms;
+  --halo-dur-slow: 520ms;
+
+  /* Transparency knob (0 = opaque, higher = more see-through). */
+  --halo-transparency: 0.15;
+}
+
+/* Island surfaces — alpha is modulated by the transparency knob. */
+:root {
+  --halo-island: rgba(0, 0, 0, calc(0.97 - var(--halo-transparency, 0.15) * 0.5));
+  --halo-island-panel: rgba(8, 8, 10, calc(0.92 - var(--halo-transparency, 0.15) * 0.5));
+  --halo-bg: rgba(0, 0, 0, calc(0.96 - var(--halo-transparency, 0.15) * 0.5));
+  --halo-surface: rgba(18, 18, 20, calc(0.98 - var(--halo-transparency, 0.15) * 0.4));
+  --halo-surface-2: rgba(32, 32, 36, calc(0.95 - var(--halo-transparency, 0.15) * 0.4));
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  /* The island stays black in light mode too — only the tints shift. */
+  --halo-card: rgba(255, 255, 255, 0.09);
+  --halo-card-2: rgba(255, 255, 255, 0.13);
+  --halo-card-3: rgba(255, 255, 255, 0.18);
+  --halo-hairline: rgba(255, 255, 255, 0.1);
+  --halo-hairline-strong: rgba(255, 255, 255, 0.2);
+  --halo-accent: #0a84ff;
+  --halo-accent-soft: rgba(10, 132, 255, 0.28);
+}
+
+/* Animation speed knob */
+:root[data-anim="slow"] {
+  --halo-dur-fast: 240ms;
+  --halo-dur: 480ms;
+  --halo-dur-slow: 720ms;
+}
+:root[data-anim="fast"] {
+  --halo-dur-fast: 100ms;
+  --halo-dur: 200ms;
+  --halo-dur-slow: 300ms;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --halo-dur-fast: 0ms;
+    --halo-dur: 0ms;
+    --halo-dur-slow: 0ms;
+  }
+}
+:root[data-motion="reduce"] {
+  --halo-dur-fast: 0ms;
+  --halo-dur: 0ms;
+  --halo-dur-slow: 0ms;
+}
+/* Explicit "allow" override — resets durations even under OS reduced-motion. */
+:root[data-motion="allow"] {
+  --halo-dur-fast: 160ms;
+  --halo-dur: 320ms;
+  --halo-dur-slow: 520ms;
+}
+:root[data-motion="allow"][data-anim="slow"] {
+  --halo-dur-fast: 240ms;
+  --halo-dur: 480ms;
+  --halo-dur-slow: 720ms;
+}
+:root[data-motion="allow"][data-anim="fast"] {
+  --halo-dur-fast: 100ms;
+  --halo-dur: 200ms;
+  --halo-dur-slow: 300ms;
+}
